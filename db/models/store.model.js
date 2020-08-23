@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 const storeItemsSchema = new Schema({
 	product_id: { type: String, required: true },
 	quantity: { type: Number, required: true },
-	price: { type: Decimal128, required: true },
+	price: { type: mongoose.Decimal128, required: true },
 });
 
 const storeSchema = new Schema(
