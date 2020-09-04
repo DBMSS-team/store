@@ -1,8 +1,13 @@
 const mongoose = require('mongoose');
 const addressSchema = require('../../../users/db/models/user.model').addressSchema;
-const storeItemsSchema = require('../../../products/db/models/product.model').productSchema;
 
 const Schema = mongoose.Schema;
+
+const storeItemsSchema = new Schema({
+	product_id: { type: String, required: true },
+	quantity: { type: Number, required: true },
+	price: { type: mongoose.Decimal128, required: true },
+});
 
 const storeSchema = new Schema(
 	{
