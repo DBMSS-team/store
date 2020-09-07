@@ -1,26 +1,38 @@
 {
-	"name": "store",
-	"version": "1.0.0",
-	"description": "Store service",
-	"main": "index.js",
-	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/DBMSS-team/store.git"
-	},
-	"keywords": [],
-	"author": "",
-	"license": "ISC",
-	"bugs": {
-		"url": "https://github.com/DBMSS-team/store/issues"
-	},
-	"homepage": "https://github.com/DBMSS-team/store#readme",
-	"dependencies": {
-		"cors": "^2.8.5",
-		"dotenv": "^8.2.0",
-		"express": "^4.17.1",
-		"mongoose": "^5.10.0"
-	}
+  "name": "store",
+  "version": "1.0.0",
+  "description": "Store service",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint -f stylish --ignore-path .gitignore .",
+    "pretest": "./node_modules/.bin/eslint --ignore-path .gitignore . --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DBMSS-team/store.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DBMSS-team/store/issues"
+  },
+  "homepage": "https://github.com/DBMSS-team/store#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.10.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.8.1",
+    "babel-eslint": "^10.1.0",
+    "husky": "^4.3.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run pretest"
+    }
+  }
 }
