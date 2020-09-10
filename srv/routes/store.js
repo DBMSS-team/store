@@ -1,20 +1,22 @@
 // eslint-disable-next-line new-cap
 const router = require("express").Router();
-let Store = require("../../db/models/store.model").Store;
-
-// Get all products
+let Store = require("../../db/models/Store.model").Store;
+const { messages, ResponseUtils, httpCodes } = require(__commons);
+const responseUtils = new ResponseUtils();
+// Get all locations
 router.route("/").get((req, res) => {
 	Store.find()
-		.then((Store) => res.json(Store))
-		.catch((err) => res.status(400).json("Error: " + err));
+		.then((Store) =>
+			responseUtils.setSuccess(httpCodes.OK, messages.SUCCESS_MESSAGE, Store))
+		.catch((err) => responseUtils.setError(httpCodes.NOT_FOUND, err.message).send(res));
 });
 
 // Get specific Store
 router.route("/:id").get((req, res) => {
 	const id = req.params.id;
 	Store.findById(id, (err, Store) => {
-		if (err) res.status(400).json("Error: " + err);
-		res.json(Store);
+		if (err) responseUtils.setError(httpCodes.NOT_FOUND, err.message).send(res);
+		responseUtils.setSuccess(httpCodes.OK, messages.SUCCESS_MESSAGE, Store);
 	});
 });
 
@@ -23,8 +25,9 @@ router.route("/").post((req, res) => {
 	const newStore = new Store(req.body);
 	newStore
 		.save()
-		.then(() => res.json("Store added."))
-		.catch((err) => res.status(400).json("Error: " + err));
+		.then(() =>
+			responseUtils.setSuccess(httpCodes.OK, messages.ADDED_SUCCESSFULLY, newStore))
+		.catch((err) => responseUtils.setError(httpCodes.DB_ERROR, err.message).send(res));
 });
 
 // Update a specific Store
@@ -35,9 +38,9 @@ router.route("/:id").put(async (req, res) => {
 			"new": true,
 			useFindAndModify: false,
 		});
-		res.json(updatedStore);
+		responseUtils.setSuccess(httpCodes.OK, messages.UPDATED_SUCCESSFULLY, updatedStore)
 	} catch (err) {
-		res.status(400).json("Error: " + err);
+		responseUtils.setError(httpCodes.DB_ERROR, err.message).send(res);
 	}
 });
 
@@ -46,9 +49,9 @@ router.route("/:id").delete(async (req, res) => {
 	const id = req.params.id;
 	try {
 		const deletedStore = await Store.findByIdAndDelete(id);
-		res.json(deletedStore);
+		responseUtils.setSuccess(httpCodes.OK, messages.DELETED_SUCCESSFULLY, deletedStore)
 	} catch (err) {
-		res.status(400).json("Error: " + err);
+		responseUtils.setError(httpCodes.DB_ERROR, err.message).send(res);
 	}
 });
 
