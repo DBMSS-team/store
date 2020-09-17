@@ -55,4 +55,13 @@ router.route("/:id").delete(async (req, res) => {
 	}
 });
 
+router.route('/categories').get(async (req, res) => {
+	try {
+		const categoryList = await Store.distinct("category_name");
+		responseUtils.setSuccess(httpCodes.OK, messages.SUCCESS_MESSAGE, categoryList);
+	} catch (err) {
+		responseUtils.setError(httpCodes.DB_ERROR, err.message).send(res);
+	}
+});
+
 module.exports = router;
