@@ -13,7 +13,7 @@ const storeSchema = new Schema(
 	{
 		name: { type: String, required: true },
 		address: { type: addressSchema, required: true },
-		categoryId: { type: String, required: true },
+		categoryName: { type: String, required: true },
 		locationId: { type: String, required: true },
 		storeItems: [storeItemsSchema],
 		storeOpen: { type: Boolean, "default": false },

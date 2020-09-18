@@ -7,8 +7,18 @@ const responseUtils = new ResponseUtils();
 router.route("/").get((req, res) => {
 	Store.find()
 		.then((Store) =>
-			responseUtils.setSuccess(httpCodes.OK, messages.SUCCESS_MESSAGE, Store))
+			responseUtils.setSuccess(httpCodes.OK, messages.SUCCESS_MESSAGE, Store).send(res))
 		.catch((err) => responseUtils.setError(httpCodes.NOT_FOUND, err.message).send(res));
+});
+
+// Get store categories
+router.route('/categories').get(async (req, res) => {
+	try {
+		const categoryList = await Store.distinct("categoryName");
+		responseUtils.setSuccess(httpCodes.OK, messages.SUCCESS_MESSAGE, categoryList).send(res);
+	} catch (err) {
+		responseUtils.setError(httpCodes.DB_ERROR, err.message).send(res);
+	}
 });
 
 // Get specific Store
@@ -26,7 +36,7 @@ router.route("/").post((req, res) => {
 	newStore
 		.save()
 		.then(() =>
-			responseUtils.setSuccess(httpCodes.OK, messages.ADDED_SUCCESSFULLY, newStore))
+			responseUtils.setSuccess(httpCodes.OK, messages.ADDED_SUCCESSFULLY, newStore).send(res))
 		.catch((err) => responseUtils.setError(httpCodes.DB_ERROR, err.message).send(res));
 });
 
@@ -50,15 +60,6 @@ router.route("/:id").delete(async (req, res) => {
 	try {
 		const deletedStore = await Store.findByIdAndDelete(id);
 		responseUtils.setSuccess(httpCodes.OK, messages.DELETED_SUCCESSFULLY, deletedStore)
-	} catch (err) {
-		responseUtils.setError(httpCodes.DB_ERROR, err.message).send(res);
-	}
-});
-
-router.route('/categories').get(async (req, res) => {
-	try {
-		const categoryList = await Store.distinct("category_name");
-		responseUtils.setSuccess(httpCodes.OK, messages.SUCCESS_MESSAGE, categoryList);
 	} catch (err) {
 		responseUtils.setError(httpCodes.DB_ERROR, err.message).send(res);
 	}
