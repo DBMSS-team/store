@@ -12,7 +12,7 @@ router.route("/").get((req, res) => {
 });
 
 // Get store categories
-router.route('/categories').get(async (req, res) => {
+router.route("/categories").get(async (req, res) => {
 	try {
 		const categoryList = await Store.distinct("categoryName");
 		responseUtils.setSuccess(httpCodes.OK, messages.SUCCESS_MESSAGE, categoryList).send(res);
