@@ -26,7 +26,7 @@ router.route("/:id").get((req, res) => {
 	const id = req.params.id;
 	Store.findById(id, (err, Store) => {
 		if (err) responseUtils.setError(httpCodes.NOT_FOUND, err.message).send(res);
-		responseUtils.setSuccess(httpCodes.OK, messages.SUCCESS_MESSAGE, Store);
+		responseUtils.setSuccess(httpCodes.OK, messages.SUCCESS_MESSAGE, Store).send(res);
 	});
 });
 
